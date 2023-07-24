@@ -1,0 +1,26 @@
+The code snippet shows how to use a buffered channel of functions to create a simple worker pool in
+Golang.
+
+Going line by line : 
+
+1.make(chan func(), 10): 
+This line creates a buffered channel of variable cnp, which is a buffer of function objects. The buffer size
+is set to 10, which means it can hold up to 10 function objects at a time. Buffered channels allow sending data i.e function objects to the channel without blocking the sender until the channel is full.
+
+2.for i := 0; i < 4; i++: 
+This loop creates four goroutines (concurrent threads) that will be used as worker routines to execute functions from the cnp channel. 
+
+3.go func() { ... }(): 
+Each goroutine is an anonymous function that waits for functions from the cnp channel and executes them in an infinite loop using range.
+
+4. cnp <- func() { ... }: 
+After creating the worker goroutines, the main goroutine sends a function object to the cnp channel. In this case, it
+    sends a function that prints "HERE1" to the console. 
+    
+5.fmt.Println("Hello"): The main goroutine also prints "Hello" to
+    the console. 
+    
+    
+Concluion : The code implements a simple worker pool. The main goroutine can send functions to the channel, and the
+worker goroutines will pick up these functions and execute them concurrently.This method provides concurrency and parallelism in our application.
+By using a buffered channel, you can control the number of tasks that are processed concurrently. For example, if you set the buffer size to 10, you ensure that at most 10 tasks are being executed concurrently
